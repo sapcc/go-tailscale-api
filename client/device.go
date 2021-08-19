@@ -97,3 +97,24 @@ func (c *Client) GetDevice(id string) (*Device, error) {
 	}
 	return &device, nil
 }
+
+func (c *Client) UpdateDevice(device Device) error {
+	return nil
+}
+
+func (c *Client) DeleteDevice(id string) error {
+	req, err := http.NewRequest("DELETE", c.target.String()+basePath+"device/"+id, nil)
+	if err != nil {
+		return err
+	}
+	req.SetBasicAuth(c.apiToken, "")
+	res, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	if res.StatusCode != 200 {
+		err = fmt.Errorf("unexpected http status code of %d", res.StatusCode)
+		return err
+	}
+	return nil
+}
